@@ -1,0 +1,24 @@
+os: linux
+language: python
+notifications:
+  email: false
+
+before_script:
+  - pip install -r requirements.txt
+  - git clone https://github.com/Errichto/youtube.wiki.git docs
+
+script:
+  - mkdocs build
+  - rm -rf docs
+  - rm requirements.txt .travis.yml mkdocs.yml .gitignore
+  - mv site/* .
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep_history: true
+  script:
+  - git add .
+  on:
+    branch: master
